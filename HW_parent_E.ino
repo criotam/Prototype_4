@@ -45,7 +45,7 @@ struct payload_p2c {
 void setup(void)
 {
   Serial.begin(115200);
-  Serial.println("Signal post");
+  Serial.println(" Signal post ");
   pinMode(ledpin_R, OUTPUT);
   pinMode(ledpin_G, OUTPUT);
   SPI.begin();
@@ -80,7 +80,7 @@ void loop() {
        while( now - last_sent >= interval  ) {
        last_sent = now;
 
-        Serial.print("Sending...");
+        Serial.print("Sending to master...");
          payload_p payload = { p.ms1, p.counter1,p.text1, p.number1 };
          RF24NetworkHeader header(/*to node*/ master_node,/*type*/ 'M');
          bool ok = network.write(header,&payload,sizeof(payload));
@@ -105,30 +105,12 @@ void loop() {
        Serial.print("Signal- ");
        Serial.print(payload1.message);
        Serial.print("\t");
-       if(payload1.message == 'R')
-         digitalWrite(ledpin_R, HIGH);
-       else if(payload1.message == 'G')
+        if(payload1.message == 'G'){
+         digitalWrite(ledpin_R, LOW);
          digitalWrite(ledpin_G, HIGH);
+         }
     
 
-       unsigned long now = millis();            
-       while( now - last_sent >= interval  ) {
-         last_sent = now;
-
-         Serial.print("Sending...");
-         payload_p2c payload = { payload1.message};
-         RF24NetworkHeader header(/*to node*/ child_node,/*type*/ 'M');
-         bool ok = network.write(header,&payload,sizeof(payload));
-         if (ok)
-           Serial.println("ok.");
-         else
-           Serial.println("failed.");
-         if(network.available())  
-           break;
-   
-   
-   
-   } 
    }
   
   delay(30);
