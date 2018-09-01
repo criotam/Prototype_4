@@ -1,4 +1,3 @@
-
 #include <RF24Network.h>
 #include <RF24.h>
 #include <SPI.h>
@@ -7,9 +6,9 @@ RF24 radio(9,10);                   // nRF24L01(+) radio attached using Getting 
 
 RF24Network network(radio);         // Network uses that radio
 
-const uint16_t this_node = 01;      // Address of our node in Octal format
+const uint16_t this_node = 02;      // Address of our node in Octal format
 const uint16_t master_node = 00;     // Address of the master  in Octal format
-const uint16_t child_node = 011;     // Address of the child node
+const uint16_t child_node = 022;     // Address of the child node
 
 int ledpin_R = 7;
 int ledpin_G = 6;
@@ -45,7 +44,7 @@ struct payload_p2c {
 void setup(void)
 {
   Serial.begin(115200);
-  Serial.println(" Signal post ");
+  Serial.println(" Signal post (Medium) ");
   pinMode(ledpin_R, OUTPUT);
   pinMode(ledpin_G, OUTPUT);
   SPI.begin();
@@ -55,7 +54,7 @@ void setup(void)
 
 void loop() {
    delay(100);
-   digitalWrite(ledpin_R,HIGH);
+   digitalWrite(ledpin_R, HIGH);
    network.update();
    while(network.available()) {
       RF24NetworkHeader header1;
@@ -117,17 +116,3 @@ void loop() {
   delay(30);
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
